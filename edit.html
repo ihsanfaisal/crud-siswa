@@ -1,14 +1,63 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ubah Data Siswa</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>edit</title>
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-  
-</body>
+  <body>
+    <div class="container">
+      <h1>Form Ubah Siswa</h1>
 
+      <form id="formUbah">
+        <label>NIS</label>
+        <input type="text" id="nis" />
+
+        <label>Nama</label>
+        <input type="text" id="nama" />
+
+        <label>Kelas</label>
+        <select name="kelas" id="kelas">
+          <option value="X">X</option>
+          <option value="XI">XI</option>
+          <option value="XII">XII</option>
+        </select>
+
+        <button id="tombolSimpan" type="submit">Simpan</button>
+      </form>
+
+      <a href="daftar.html">Daftar Siswa</a>
+    </div>
+
+    <script type="module">
+      import { ambilDataSiswa, ubahDataSiswa } from './main.js'
+
+      // mengambil id dari URL
+      const urlParams = new URLSearchParams(window.location.search)
+      const idSiswa = urlParams.get('id')
+
+      // mengisi form dengan data siswa yang diambil dari Firestore
+      const siswa = await ambilDataSiswa(idSiswa)
+
+      document.getElementById('nis').value = siswa.nis
+      document.getElementById('nama').value = siswa.nama
+
+      const formUbah = document.getElementById('formUbah')
+
+      formUbah.addEventListener('submit', function (e) {
+        // mencegah reload halaman
+        e.preventDefault()
+
+        const nis = document.getElementById('nis').value
+        const nama = document.getElementById('nama').value
+        const kelas = document.getElementById('kelas').value
+
+        // eksekusi fungsi ubah data siswa
+        ubahDataSiswa(idSiswa, nis, nama, kelas)
+      })
+    </script>
+  </body>
 </html>
